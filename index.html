@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content = "width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./style.css">
+        <title>Игра Дуэль</title>
+        <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        
+        
+        
+    </head>
+    <body>
+        
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <button id="restartButton" onclick="restartGame()" style="display: none;">Начать заново</button>
+        <!-- Контейнер для React-компонента -->
+        <div id="menuContainer" style="display: none; position: absolute; top: 10%; left: 10%; z-index: 1000;"></div>
+
+        <script type="text/babel">
+             // Компонент HeroMenu
+        function HeroMenu({ hero, onClose }) {
+            const [speed, setSpeed] = React.useState(hero.speedY);
+            const [color, setColor] = React.useState(hero.color);
+
+            const handleSpeedChange = (e) => {
+                const newSpeed = Number(e.target.value);
+                setSpeed(newSpeed);
+                hero.speedY = newSpeed;
+            };
+
+            const handleColorChange = (e) => {
+                const newColor = e.target.value;
+                setColor(newColor);
+                hero.color = newColor;
+            };
+
+            return (
+                <div style={{ padding: '20px', backgroundColor: '#fff', border: '1px solid #000', borderRadius: '10px' }}>
+                    <h3>Настройки Героя</h3>
+                    <label>
+                        Скорость передвижения:
+                        <input type="range" min="1" max="10" value={speed} onChange={handleSpeedChange} />
+                    </label>
+                    <br />
+                    <label>
+                        Цвет заклинаний:
+                        <input type="color" value={color} onChange={handleColorChange} />
+                    </label>
+                    <br />
+                    <button onClick={onClose}>Закрыть</button>
+                </div>
+            );
+        }
+
+        // Показать меню для выбранного героя
+        function showHeroMenu(hero, x, y) {
+    ReactDOM.render(
+        React.createElement(window.HeroMenu, {
+            hero: hero,
+            onClose: () => {
+                ReactDOM.unmountComponentAtNode(document.getElementById('menuContainer'));
+                document.getElementById('menuContainer').style.display = 'none';
+            }
+        }),
+        document.getElementById('menuContainer')
+    );
+
+    // Позиционирование меню рядом с героем
+    const menu = document.getElementById('menuContainer');
+    menu.style.display = 'block';
+    menu.style.left = `${x}px`;
+    menu.style.top = `${y}px`;
+}
+
+// Обработка клика на героев
+canvas.addEventListener('click', (e) => {
+    const mouseX = e.clientX - canvas.offsetLeft;
+    const mouseY = e.clientY - canvas.offsetTop;
+
+    [hero1, hero2].forEach((hero) => {
+        const distance = Math.hypot(hero.x - mouseX, hero.y - mouseY);
+        if (distance < hero.radius) {
+            showHeroMenu(hero, e.clientX + 10, e.clientY + 10); // Показать меню рядом с героем
+        }
+    });
+});
+
+        </script>
+    
+        <script src="./game.js"></script>
+
+
+    </body>
+</html>

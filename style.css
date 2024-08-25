@@ -1,0 +1,31 @@
+canvas{
+    border: 2px solid black;
+    display: block;
+    margin: 20px auto;
+}
+
+#restartButton {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 15px 30px;
+    font-size: 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: none; /* Изначально кнопка скрыта */
+}
+
+#menuContainer {
+    display: block; /* Меню скрыто по умолчанию */
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
